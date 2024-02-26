@@ -3,8 +3,9 @@ const User=require("./models/User.js");
 const cron = require('node-cron');
 
 const {fetchWeather}=require('./utils.js')
-module.exports= async (bot)=>{
-    console.log("I am here")
+module.exports= async (bot,frequency)=>{
+
+    console.log("I am here",frequency)
     bot.on('message', async(msg) => {
     const chatId = msg.chat.id;
     const messageText = msg.text;
@@ -46,7 +47,7 @@ module.exports= async (bot)=>{
   });
 
   //scheduling the event
-  cron.schedule('38 15 * * *', async () => {
+  cron.schedule(frequency, async () => {
     const users = await User.find();
     users.forEach(async (user) => {
         //Handling blocked case

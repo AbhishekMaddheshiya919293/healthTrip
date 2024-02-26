@@ -27,13 +27,14 @@ const connect = () => {
   app.use(cookieParser())
   app.use(express.json());
   app.use(helmet());
-
+  var frequency='38 15 * * *';
+  
   /// here function for handling all botLogic
   const bot = new TelegramBot(token, { polling: true });
-  botlogic(bot);
+  
   app.use("/api/auth", authRoute);
   app.use("/api/portal", portalRoute);
-
+  botlogic(bot,frequency);
   //Global error handler
 
 app.use((err, req, res, next) => {
@@ -51,3 +52,4 @@ app.listen(process.env.PORT,()=>{
     connect()
     console.log(`listening at port ${process.env.PORT}`)
   })
+

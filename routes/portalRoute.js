@@ -15,6 +15,9 @@ router.get('/block/:chatId',
 verifyToken,
 portalController.blockUser);
 
+router.get('/updateFrequency',
+verifyToken,
+portalController.updateFrequency);
 
 
 module.exports=router;
