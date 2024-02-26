@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const cookieParser = require('cookie-parser');
 const TelegramBot = require('node-telegram-bot-api');
 const token=process.env.TELEGRAMAPI;
-
+const Frequency=require("./models/Frequency.js");
 const portalRoute = require("./routes/portalRoute");
 const helmet = require("helmet");
 const authRoute = require("./routes/authRoute");
@@ -27,14 +27,13 @@ const connect = () => {
   app.use(cookieParser())
   app.use(express.json());
   app.use(helmet());
-  var frequency='38 15 * * *';
   
   /// here function for handling all botLogic
   const bot = new TelegramBot(token, { polling: true });
   
   app.use("/api/auth", authRoute);
   app.use("/api/portal", portalRoute);
-  botlogic(bot,frequency);
+  botlogic(bot);
   //Global error handler
 
 app.use((err, req, res, next) => {
@@ -48,8 +47,9 @@ app.use((err, req, res, next) => {
   });
 
 
-app.listen(process.env.PORT,()=>{
+app.listen(process.env.PORT,async()=>{
     connect()
+    const result = await Frequency.findOneAndUpdate({FrequencyId:1}, {frequency:"32 9 * * *"}, {upsert:true});
     console.log(`listening at port ${process.env.PORT}`)
   })
 
